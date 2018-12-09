@@ -1,0 +1,4 @@
+"0","res.x_t_6.16.ts<-as.vector(residuals(x_t_6.16.ts.AR1))"
+"0","fit.x_t_6.16.ts<-as.vector(fitted(x_t_6.16.ts.AR1))"
+"0","par(mfrow=c(1,2), oma=c(0,0,0,0))"
+"0","acf(res.x_t_6.16.ts, lag.max = 25, type=""correlation"", main=""ACF of the Residuals for x(t)"")"

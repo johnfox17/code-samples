@@ -1,0 +1,6 @@
+"0","N_hat<-array(0, dim = c(1,T))"
+"0","for(i in 6:T){"
+"0","  N_hat[i]<-y_t_6.16.ts[i]-v0*x_t_6.16.ts[i]-v1*x_t_6.16.ts[i-1]-v2*x_t_6.16.ts[i-2]-v3*x_t_6.16.ts[i-3]-v4*x_t_6.16.ts[i-4]-v5*x_t_6.16.ts[i-5]"
+"0","}"
+"0","N_hat<-N_hat[6:T]"
+"0","plot(N_hat, type=""o"", pch=16, cex=.5, xlab=""Time"", ylab=expression(italic(hat(N)[italic(t)])))"

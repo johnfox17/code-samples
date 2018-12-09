@@ -1,0 +1,1 @@
+"0","plot(y_t_6.18.ts, type=""o"", xlab=""Time"", ylab = ""Amount Refunded (Millions Dollars)"", main = ""Output Time Series"")"

@@ -1,0 +1,11 @@
+"0","res.x_t_6.18.ts<-as.vector(residuals(x_t_6.18.ts.AR1))"
+"2","Warning message:
+"
+"2","In file(con, ""r"") :"
+"2","
+ "
+"2"," cannot open file 'HW4.utf8.md': No such file or directory
+"
+"0","fit.x_t_6.18.ts<-as.vector(fitted(x_t_6.18.ts.AR1))"
+"0","par(mfrow=c(1,2), oma=c(0,0,0,0))"
+"0","acf(res.x_t_6.18.ts, lag.max = 25, type=""correlation"", main=""ACF of the Residuals for x(t)"")"

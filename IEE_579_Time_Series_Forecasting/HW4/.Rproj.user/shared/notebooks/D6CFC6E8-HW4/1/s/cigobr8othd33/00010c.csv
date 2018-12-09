@@ -1,0 +1,1 @@
+"0","qqnorm(res.N_hat.ar1, datax=TRUE, pch=16, xlab=""Residual"", main="""")"

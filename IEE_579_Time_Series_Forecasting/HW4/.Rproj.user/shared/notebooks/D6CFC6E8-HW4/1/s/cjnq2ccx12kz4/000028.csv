@@ -1,0 +1,2 @@
+"0","par(mfrow=c(1,2), oma=c(0,0,0,0))"
+"0","acf(x_t_6.18.ts, type = ""correlation"", main=""ACF for National Population"")"

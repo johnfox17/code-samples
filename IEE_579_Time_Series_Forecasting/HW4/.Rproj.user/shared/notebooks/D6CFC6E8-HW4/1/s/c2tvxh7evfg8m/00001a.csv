@@ -1,0 +1,2 @@
+"0","last_20_observations<-df_6.22.ts[81:100]"
+"0","plot.ts(last_20_observations)"

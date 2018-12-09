@@ -1,0 +1,1 @@
+"0","hist(res.N_hat.ar1, col=""gray"", xlab=""Residual"", main="""")"

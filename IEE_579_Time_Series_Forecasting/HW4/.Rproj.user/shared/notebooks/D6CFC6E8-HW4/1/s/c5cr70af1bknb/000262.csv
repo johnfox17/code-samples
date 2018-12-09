@@ -1,0 +1,1 @@
+"0","plot(fit.x_t_6.16.ts, res.x_t_6.16.ts, pch=16, xlab=""Fitted value"", ylab=""Residual"")"

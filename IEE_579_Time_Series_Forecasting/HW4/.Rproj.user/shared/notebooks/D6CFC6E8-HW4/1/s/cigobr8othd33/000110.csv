@@ -1,0 +1,1 @@
+"0","plot(fit.N_hat.ar1, res.N_hat.ar1, pch=16, xlab=""Fitted value"", ylab=""Residual"")"

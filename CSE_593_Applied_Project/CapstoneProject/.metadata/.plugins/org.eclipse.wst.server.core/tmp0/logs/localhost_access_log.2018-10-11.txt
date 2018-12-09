@@ -1,0 +1,13 @@
+127.0.0.1 - - [11/Oct/2018:14:25:13 -0700] "GET / HTTP/1.1" 404 1074
+0:0:0:0:0:0:0:1 - - [11/Oct/2018:14:25:14 -0700] "GET /MathEvaluator/ HTTP/1.1" 200 397
+0:0:0:0:0:0:0:1 - - [11/Oct/2018:14:25:26 -0700] "POST /MathEvaluator/studentInfo HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [11/Oct/2018:14:25:26 -0700] "GET /MathEvaluator/home.jsp HTTP/1.1" 200 388
+0:0:0:0:0:0:0:1 - - [11/Oct/2018:14:25:30 -0700] "GET /MathEvaluator/locateLecture HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [11/Oct/2018:14:25:30 -0700] "GET /MathEvaluator/problemDisplay.jsp HTTP/1.1" 200 298
+0:0:0:0:0:0:0:1 - - [11/Oct/2018:14:25:34 -0700] "POST /MathEvaluator/problemSelector HTTP/1.1" 200 -
+0:0:0:0:0:0:0:1 - - [11/Oct/2018:14:46:05 -0700] "GET /MathEvaluator/ HTTP/1.1" 200 397
+0:0:0:0:0:0:0:1 - - [11/Oct/2018:14:46:10 -0700] "POST /MathEvaluator/studentInfo HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [11/Oct/2018:14:46:10 -0700] "GET /MathEvaluator/home.jsp HTTP/1.1" 200 388
+0:0:0:0:0:0:0:1 - - [11/Oct/2018:14:46:11 -0700] "GET /MathEvaluator/locateLecture HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [11/Oct/2018:14:46:11 -0700] "GET /MathEvaluator/problemDisplay.jsp HTTP/1.1" 200 298
+0:0:0:0:0:0:0:1 - - [11/Oct/2018:14:46:13 -0700] "POST /MathEvaluator/problemSelector HTTP/1.1" 200 -

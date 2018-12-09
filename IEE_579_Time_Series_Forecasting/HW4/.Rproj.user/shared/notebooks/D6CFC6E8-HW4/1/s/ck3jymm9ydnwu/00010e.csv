@@ -1,0 +1,4 @@
+"0","#abline(v=0, col=""blue"")"
+"0","vhat<-sqrt(var(beta_t)/var(alpha_t))*ralbe$acf"
+"0","nl<-length(vhat)"
+"0","plot(seq(-(nl-1)/2, (nl-1)/2, 1), vhat, type=""h"", xlab=""Lag"", ylab=expression(italic(hat(v)[italic(j)])))"

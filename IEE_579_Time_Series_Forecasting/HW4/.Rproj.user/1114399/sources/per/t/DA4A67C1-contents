@@ -1,0 +1,350 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
+  word_document: default
+---
+
+Here we present the R notebook for the solutions of Homework 4
+```{r}
+df_6.18<-read.csv("B20.csv", header = TRUE)
+x_t_6.18<-df_6.18[,3]
+y_t_6.18<-df_6.18[,2]
+x_t_6.18.ts<-ts(x_t_6.18)
+y_t_6.18.ts<-ts(y_t_6.18)
+par(mfrow=c(2,1), oma=c(0,0,0,0))
+plot(x_t_6.18.ts, type="o", xlab="Time", ylab="National Population (Thousands)", main="Input Time Series")
+plot(y_t_6.18.ts, type="o", xlab="Time", ylab = "Amount Refunded (Millions Dollars)", main = "Output Time Series")
+```
+Plotting the Cross corrilation function CCF
+```{r}
+ccf(y_t_6.18.ts, x_t_6.18.ts)
+abline(v=0, col="blue")
+```
+The input and output time series seem to be cross correlated. Now let's plot the input time series ACF and PACF
+```{r}
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(x_t_6.18.ts, type = "correlation", main="ACF for National Population")
+acf(x_t_6.18.ts, type = "partial", main="PACF for National Population")
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(diff(x_t_6.18.ts), type = "correlation", main="ACF for National Population")
+acf(diff(x_t_6.18.ts), type = "partial", main="PACF for National Population")
+```
+By looking at the first set of ACF and PACF it looks like an AR(1) model would work, but the time series still seems non-stationary. So what we did was first difference the time series and plotted the ACF and PACF, this looks a lot better and it indicated that an IMA(1,1) model would be most appropriate. Hense, we try an AR(1) and an IMA(1) 
+```{r}
+x_t_6.18.ts.AR1<-arima(x_t_6.18.ts, order = c(1,0,0))
+arima(x_t_6.18.ts, order = c(1,1,0))
+#x_t_6.18.ts.IMA<-arima(x_t_6.18.ts, order = c(0,1,1))
+#x_t_6.18.ts.IMA
+x_t_6.18.ts.AR1
+```
+We select the ARIMA(1,0,0). Checking model adequacy
+```{r}
+res.x_t_6.18.ts<-as.vector(residuals(x_t_6.18.ts.AR1))
+fit.x_t_6.18.ts<-as.vector(fitted(x_t_6.18.ts.AR1))
+
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(res.x_t_6.18.ts, lag.max = 25, type="correlation", main="ACF of the Residuals for x(t)")
+acf(res.x_t_6.18.ts, lag.max = 25, type="partial", main="PACF of the Residuals for x(t)")
+
+par(mfrow=c(2,2), oma=c(0,0,0,0))
+qqnorm(res.x_t_6.18.ts, datax=TRUE, pch=16, xlab="Residual", main="")
+qqline(res.x_t_6.18.ts, datax=TRUE)
+plot(fit.x_t_6.18.ts, res.x_t_6.18.ts, pch=16, xlab="Fitted value", ylab="Residual")
+abline(h=0)
+hist(res.x_t_6.18.ts, col="gray", xlab="Residual", main="")
+plot(res.x_t_6.18.ts, type="l", xlab="Observation order", ylab="Residual")
+points(res.x_t_6.18.ts, pch=16, cex=0.5)
+abline(h=0)
+res.x_t_6.18.ts<-as.vector(residuals(x_t_6.18.ts.IMA))
+fit.x_t_6.18.ts<-as.vector(fitted(x_t_6.18.ts.IMA))
+
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(res.x_t_6.18.ts, lag.max = 25, type="correlation", main="ACF of the Residuals for x(t)")
+acf(res.x_t_6.18.ts, lag.max = 25, type="partial", main="PACF of the Residuals for x(t)")
+
+par(mfrow=c(2,2), oma=c(0,0,0,0))
+qqnorm(res.x_t_6.18.ts, datax=TRUE, pch=16, xlab="Residual", main="")
+qqline(res.x_t_6.18.ts, datax=TRUE)
+plot(fit.x_t_6.18.ts, res.x_t_6.18.ts, pch=16, xlab="Fitted value", ylab="Residual")
+abline(h=0)
+hist(res.x_t_6.18.ts, col="gray", xlab="Residual", main="")
+plot(res.x_t_6.18.ts, type="l", xlab="Observation order", ylab="Residual")
+points(res.x_t_6.18.ts, pch=16, cex=0.5)
+abline(h=0)
+```
+It seems pretty good, but it does have a couple of outliers. As can be seen from the time series plot as well.
+```{r}
+T<-length(x_t_6.18.ts)
+#alpha_t<-diff(x_t_6.18.ts)[2:T]-0.76*diff(x_t_6.18.ts)[1:(T-1)]
+alpha_t<-x_t_6.18.ts[3:T]-1.76*x_t_6.18.ts[2:(T-1)]+0.76*x_t_6.18.ts[1:(T-2)]
+beta_t<-x_t_6.18.ts[3:T]-1.76*x_t_6.18.ts[2:(T-1)]+0.76*x_t_6.18.ts[1:(T-2)]
+#beta_t<-diff(y_t_6.18.ts)[2:T]-0.76*diff(y_t_6.18.ts)[1:(T-1)]
+ralbe<-ccf(beta_t, alpha_t, main = "CCF of alpha(t) and beta(t)", ylab="CCF")
+#abline(v=0, col="blue")
+
+```
+Obtaining the estimates of v_t
+```{r}
+v_hat<-sqrt(var(beta_t)/var(alpha_t))*ralbe$acf
+n1<-length(v_hat)
+plot(seq(-(n1-1)/2, (n1-1)/2,1), v_hat, type = 'h', xlab = 'Lag', ylab = expression(italic(hat(v)[italic(j)])))
+#abline(v=0, col='blue')
+abline(h=0)
+v0<-v_hat[10]
+v1<-v_hat[11]
+```
+Now to model the noise
+```{r}
+N_hat<-array(0, dim = c(1,T))
+for(i in 2:T){
+  N_hat[i]<-y_t_6.18.ts[i]-v0*x_t_6.18.ts[i]-v1*x_t_6.18.ts[i-1]
+}
+N_hat<-N_hat[3:T]
+N_hat
+plot(N_hat, type="o", pch=16, cex=.5, xlab="Time", ylab=expression(italic(hat(N)[italic(t)])))
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(N_hat, lag.max=25, type="correlation", main="ACF of Nhat")
+acf(N_hat, lag.max=25, type="partial", main="PACF of Nhat")
+```
+It seems that N_hat can be modeled as an AR(1) or AR(2)
+```{r}
+N_hat.ar1<-arima(N_hat, order = c(1,1,0), include.mean = FALSE)
+auto.arima(N_hat)
+res.N_hat.ar1<-as.vector(residuals(N_hat.ar1))
+fit.N_hat.ar1<-as.vector(fitted(N_hat.ar1))
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(res.N_hat.ar1, lag.max = 25, type="correlation", main="ACF of the Residuals for N_hat")
+acf(res.N_hat.ar1, lag.max = 25, type="partial", main="PACF of the Residuals for N_hat")
+
+par(mfrow=c(2,2), oma=c(0,0,0,0))
+qqnorm(res.N_hat.ar1, datax=TRUE, pch=16, xlab="Residual", main="")
+qqline(res.N_hat.ar1, datax=TRUE)
+plot(fit.N_hat.ar1, res.N_hat.ar1, pch=16, xlab="Fitted value", ylab="Residual")
+abline(h=0)
+hist(res.N_hat.ar1, col="gray", xlab="Residual", main="")
+plot(res.N_hat.ar1, type="l", xlab="Observation order", ylab="Residual")
+points(res.N_hat.ar1, pch=16, cex=0.5)
+abline(h=0)
+
+```
+Using the arimax funtion in TSA
+```{r}
+lag1.x_t_6.18.ts<-lag(x_t_6.18.ts,0)
+dat1<-cbind(x_t_6.18.ts, lag1.x_t_6.18.ts, y_t_6.18.ts)
+dimnames(dat1)[[2]]<-c("xt","lag1x","yt")
+data2<-na.omit(as.data.frame(dat1))
+data2
+#Input arguments
+#order: determines the model for the error component, i.e. the order of the 
+#ARIMA model for y(t) if there were no x(t)
+
+#xtrans:x(t)
+#transfer: the orders (r and s) of the trasfer function
+tf.6.18<-arimax(data2$yt, order=c(1,1,0), xtransf = data.frame(data2$lag1x), transfer=list(c(0,1)), include.mean = FALSE)
+tf.6.18
+#ARIMAX.6.18.1<-arimax(y_t_6.18.ts, order = c(1,0,0), transfer = list(c(0,1)))
+```
+Model adquecy check
+```{r}
+res.tf.6.18<-na.omit(as.vector(residuals(tf.6.18)))
+fit.tf.6.18<-na.omit(as.vector(fitted(tf.6.18)))
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(res.tf.6.18, lag.max = 25, type="correlation", main="ACF of the Residuals for TF-N Model")
+acf(res.tf.6.18, lag.max = 25, type="partial", main="PACF of the Residuals for TF-N Model")
+fit.tf.6.18
+par(mfrow=c(2,2), oma=c(0,0,0,0))
+qqnorm(res.tf.6.18, datax=TRUE, pch=16, xlab="Residual", main="")
+qqline(res.tf.6.18, datax=TRUE)
+plot(fit.tf.6.18, res.tf.6.18, pch=16, xlab="Fitted value", ylab="Residual")
+abline(h=0)
+hist(res.tf.6.18, col="gray", xlab="Residual", main="")
+plot(res.tf.6.18, type="l", xlab="Observation order", ylab="Residual")
+points(res.tf.6.18, pch=16, cex=0.5)
+abline(h=0)
+```
+
+```{r}
+T<-length(res.tf.6.18)
+T
+Ta<-length(alpha_t)+1
+Ta
+res.tf.6.18
+alpha_t
+ccf(res.tf.6.18, alpha_t[(Ta-T+1):Ta], main = "CCF of Alpha(t) and Residuals of TF-N Model", ylab = "CCF",  na.action = na.pass)
+```
+The conclusion is that a b=0, r=0, s=1 tranfer function and an AR(1) for the noise is an appropriate model for this data.
+```{r}
+
+```
+Problem 6.16
+```{r}
+df_6.16<-read.csv("B6.csv", header = TRUE)
+x_t_6.16.ts<-ts(df_6.16[,3])
+y_t_6.16.ts<-ts(df_6.16[,2])
+par(mfrow=c(2,1), oma=c(0,0,0,0))
+plot(x_t_6.16.ts, type="o", xlab="Time", ylab="CO2", main="Input Time Series")
+plot(y_t_6.16.ts, type="o", xlab="Time", ylab = "Anomaly", main = "Output Time Series")
+```
+Plotting the cross correlation between input and output
+```{r}
+ccf(y_t_6.16.ts, x_t_6.16.ts, ylab="CCF")
+abline(v=0, col="blue")
+```
+The two series do seem to be extremely cross correlated. Now, let's plot the ACF and PACF of the input time series
+```{r}
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(x_t_6.16.ts, type = "correlation", main="ACF for National Population")
+acf(x_t_6.16.ts, type = "partial", main="PACF for National Population")
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(diff(diff(x_t_6.16.ts)), type = "correlation", main="ACF for National Population")
+acf(diff(diff(x_t_6.16.ts)), type = "partial", main="PACF for National Population")
+```
+This indicated that an AR(1) model seems to be adequate for the input time series
+```{r}
+
+x_t_6.16.ts.AR1<-arima(x_t_6.16.ts, order = c(1,2,0))
+x_t_6.16.ts.AR1
+#auto.arima(x_t_6.16.ts)
+#x_t_6.16.ts.AR32<-arima(x_t_6.16.ts, order = c(3,2,0))
+```
+For the prewhitening we will use the ARIMA(1,2,0) model. Checking model adequecy
+```{r}
+res.x_t_6.16.ts<-as.vector(residuals(x_t_6.16.ts.AR1))
+fit.x_t_6.16.ts<-as.vector(fitted(x_t_6.16.ts.AR1))
+
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(res.x_t_6.16.ts, lag.max = 25, type="correlation", main="ACF of the Residuals for x(t)")
+acf(res.x_t_6.16.ts, lag.max = 25, type="partial", main="PACF of the Residuals for x(t)")
+
+par(mfrow=c(2,2), oma=c(0,0,0,0))
+qqnorm(res.x_t_6.16.ts, datax=TRUE, pch=16, xlab="Residual", main="")
+qqline(res.x_t_6.16.ts, datax=TRUE)
+plot(fit.x_t_6.16.ts, res.x_t_6.16.ts, pch=16, xlab="Fitted value", ylab="Residual")
+abline(h=0)
+hist(res.x_t_6.16.ts, col="gray", xlab="Residual", main="")
+plot(res.x_t_6.16.ts, type="l", xlab="Observation order", ylab="Residual")
+points(res.x_t_6.16.ts, pch=16, cex=0.5)
+abline(h=0)
+```
+Let's prewhiten
+```{r}
+T<-length(x_t_6.16.ts)
+alpha_t<-x_t_6.16.ts[4:T]-1.7337*x_t_6.16.ts[3:(T-1)]+0.4674*x_t_6.16.ts[2:(T-2)]+0.2663*x_t_6.16.ts[1:(T-3)]
+beta_t<-y_t_6.16.ts[4:T]-1.7337*y_t_6.16.ts[3:(T-1)]+0.4674*y_t_6.16.ts[2:(T-2)]+0.2663*y_t_6.16.ts[1:(T-3)]
+ralbe<-ccf(beta_t, alpha_t, main = "CCF of alpha(t) and beta(t)", ylab="CCF")
+#abline(v=0, col="blue")
+vhat<-sqrt(var(beta_t)/var(alpha_t))*ralbe$acf
+nl<-length(vhat)
+plot(seq(-(nl-1)/2, (nl-1)/2, 1), vhat, type="h", xlab="Lag", ylab=expression(italic(hat(v)[italic(j)])))
+#abline(v=0, col="blue")
+abline(h=0)
+
+```
+```{r}
+v0<-vhat[18]
+v1<-vhat[19]
+v2<-vhat[20]
+v3<-vhat[21]
+v4<-vhat[22]
+v5<-vhat[23]
+```
+Creation of N_hat and analyzing N_hat for the selectio of its model
+
+```{r}
+N_hat<-array(0, dim = c(1,T))
+for(i in 6:T){
+  N_hat[i]<-y_t_6.16.ts[i]-v0*x_t_6.16.ts[i]-v1*x_t_6.16.ts[i-1]-v2*x_t_6.16.ts[i-2]-v3*x_t_6.16.ts[i-3]-v4*x_t_6.16.ts[i-4]-v5*x_t_6.16.ts[i-5]
+}
+N_hat<-N_hat[6:T]
+plot(N_hat, type="o", pch=16, cex=.5, xlab="Time", ylab=expression(italic(hat(N)[italic(t)])))
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(N_hat, lag.max=25, type="correlation", main="ACF of Nhat")
+acf(N_hat, lag.max=25, type="partial", main="PACF of Nhat")
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(diff(N_hat), lag.max=25, type="correlation", main="ACF of Nhat")
+acf(diff(N_hat), lag.max=25, type="partial", main="PACF of Nhat")
+
+auto.arima(N_hat)
+arima(N_hat, order = c(0,1,0))
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+plot(diff(N_hat))
+plot(diff(diff(N_hat)))
+```
+By using the auto.arima function we can see that N_hat is best modeled with an ARIMA(3,2,3). Now let's create the final model
+```{r}
+lag0.x<-lag(x_t_6.16.ts, 0)
+dat0<-cbind.data.frame(x_t_6.16.ts, lag0.x, y_t_6.16.ts)
+dimnames(dat0)[[2]]<-c("xt","lag0x", "yt")
+data2<-na.omit(as.data.frame(dat0))
+
+tf1.6.16<-arimax(data2$yt, order=c(1,2,0), xtransf = data.frame(data2$lag0x), transfer = list(c(1,0)), include.mean = FALSE)
+tf1.6.16
+tf2.6.16<-arimax(data2$yt, order=c(2,2,0), xtransf = data.frame(data2$lag0x), transfer = list(c(1,0)), include.mean = FALSE)
+tf2.6.16
+tf3.6.16<-arimax(data2$yt, order=c(3,2,0), xtransf = data.frame(data2$lag0x), transfer = list(c(1,0)), include.mean = FALSE)
+tf3.6.16
+tf4.6.16<-arimax(data2$yt, order=c(3,2,3), xtransf = data.frame(data2$lag0x), transfer = list(c(1,0)), include.mean = FALSE)
+tf4.6.16
+```
+Model adequacy
+```{r}
+res.tf.6.16<-na.omit(as.vector(residuals(tf4.6.16)))
+fit.tf.6.16<-na.omit(as.vector(fitted(tf4.6.16)))
+par(mfrow=c(1,2), oma=c(0,0,0,0))
+acf(res.tf.6.16, lag.max = 25, type="correlation", main="ACF of the Residuals for TF-N Model")
+acf(res.tf.6.16, lag.max = 25, type="partial", main="PACF of the Residuals for TF-N Model")
+fit.tf.6.16
+par(mfrow=c(2,2), oma=c(0,0,0,0))
+qqnorm(res.tf.6.16, datax=TRUE, pch=16, xlab="Residual", main="")
+qqline(res.tf.6.16, datax=TRUE)
+plot(fit.tf.6.16, res.tf.6.16, pch=16, xlab="Fitted value", ylab="Residual")
+abline(h=0)
+hist(res.tf.6.16, col="gray", xlab="Residual", main="")
+plot(res.tf.6.16, type="l", xlab="Observation order", ylab="Residual")
+points(res.tf.6.16, pch=16, cex=0.5)
+abline(h=0)
+```
+
+```{r}
+T<-length(res.tf.6.16)
+T
+Ta<-length(alpha_t)+3
+Ta
+res.tf.6.16
+alpha_t
+ccf(res.tf.6.16, alpha_t[(Ta-T+1):Ta], main = "CCF of Alpha(t) and Residuals of TF-N Model", ylab = "CCF",  na.action = na.pass)
+```
+
+Problem 6.22
+```{r}
+df_6.22<-read.csv("E6_2.csv", header = FALSE)
+df_6.22.ts<-ts(df_6.22)
+plot.ts(df_6.22.ts, type="o", ylab = "Weekly Shipments", main = "Weekly Shipments Time Series")
+```
+We will fit an ARIMA model for the first 80 observetions
+```{r}
+first_80_observations<-df_6.22.ts[1:80]
+plot.ts(first_80_observations, type = "o")
+auto.arima(first_80_observations)
+```
+Fitting an ARIMA model for the last 20 observations. So we can calculate the mean and with this fit an intevention model
+```{r}
+last_20_observations<-df_6.22.ts[81:100]
+plot.ts(last_20_observations)
+auto.arima(last_20_observations)
+arima(last_20_observations, order = c(1,0,0))
+mean(last_20_observations)
+
+```
+
+```{r}
+acf(last_20_observations, type = "correlation")
+acf(last_20_observations, type = "partial")
+arima(last_20_observations, order = c(1,1,0), include.mean = TRUE)
+arima(last_20_observations, order = c(1,0,0))
+```
+This means that our intervention part will have w_o=1851.7560 with our response being a step function

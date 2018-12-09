@@ -1,0 +1,4 @@
+"0","T<-length(x_t_6.16.ts)"
+"0","alpha_t<-x_t_6.16.ts[4:T]-1.7337*x_t_6.16.ts[3:(T-1)]+0.4674*x_t_6.16.ts[2:(T-2)]+0.2663*x_t_6.16.ts[1:(T-3)]"
+"0","beta_t<-y_t_6.16.ts[4:T]-1.7337*y_t_6.16.ts[3:(T-1)]+0.4674*y_t_6.16.ts[2:(T-2)]+0.2663*y_t_6.16.ts[1:(T-3)]"
+"0","ralbe<-ccf(beta_t, alpha_t, main = ""CCF of alpha(t) and beta(t)"", ylab=""CCF"")"

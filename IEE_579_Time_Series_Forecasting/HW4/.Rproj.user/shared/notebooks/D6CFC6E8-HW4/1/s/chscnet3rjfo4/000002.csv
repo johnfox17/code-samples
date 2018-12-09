@@ -1,0 +1,4 @@
+"0","res.tf.6.16<-na.omit(as.vector(residuals(tf4.6.16)))"
+"0","fit.tf.6.16<-na.omit(as.vector(fitted(tf4.6.16)))"
+"0","par(mfrow=c(1,2), oma=c(0,0,0,0))"
+"0","acf(res.tf.6.16, lag.max = 25, type=""correlation"", main=""ACF of the Residuals for TF-N Model"")"

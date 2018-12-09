@@ -1,0 +1,7 @@
+"0","df_6.18<-read.csv(""B20.csv"", header = TRUE)"
+"0","x_t_6.18<-df_6.18[,3]"
+"0","y_t_6.18<-df_6.18[,2]"
+"0","x_t_6.18.ts<-ts(x_t_6.18)"
+"0","y_t_6.18.ts<-ts(y_t_6.18)"
+"0","par(mfrow=c(2,1), oma=c(0,0,0,0))"
+"0","plot(x_t_6.18.ts, type=""o"", xlab=""Time"", ylab=""National Population (Thousands)"", main=""Input Time Series"")"

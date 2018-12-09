@@ -1,0 +1,3 @@
+"0","v_hat<-sqrt(var(beta_t)/var(alpha_t))*ralbe$acf"
+"0","n1<-length(v_hat)"
+"0","plot(seq(-(n1-1)/2, (n1-1)/2,1), v_hat, type = 'h', xlab = 'Lag', ylab = expression(italic(hat(v)[italic(j)])))"

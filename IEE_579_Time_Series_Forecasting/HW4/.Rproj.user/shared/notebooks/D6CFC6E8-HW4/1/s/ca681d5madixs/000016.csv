@@ -1,0 +1,2 @@
+"0","first_80_observations<-df_6.22.ts[1:80]"
+"0","plot.ts(first_80_observations, type = ""o"")"

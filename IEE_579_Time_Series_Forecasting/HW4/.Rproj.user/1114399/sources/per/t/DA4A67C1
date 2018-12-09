@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1542079164021.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3774695587",
+    "id" : "DA4A67C1",
+    "lastKnownWriteTime" : 1542256737,
+    "last_content_update" : -2147483648,
+    "path" : "~/ASU/IEE 579 - Time Series Analy-forecasting/Homework/HW4/HW4.Rmd",
+    "project_path" : "HW4.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "278,0",
+        "docOutlineVisible" : "0",
+        "scrollLine" : "276",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

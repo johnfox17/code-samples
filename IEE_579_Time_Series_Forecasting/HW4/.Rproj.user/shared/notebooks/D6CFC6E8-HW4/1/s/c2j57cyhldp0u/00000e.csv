@@ -1,0 +1,5 @@
+"0","df_6.16<-read.csv(""B6.csv"", header = TRUE)"
+"0","x_t_6.16.ts<-ts(df_6.16[,3])"
+"0","y_t_6.16.ts<-ts(df_6.16[,2])"
+"0","par(mfrow=c(2,1), oma=c(0,0,0,0))"
+"0","plot(x_t_6.16.ts, type=""o"", xlab=""Time"", ylab=""CO2"", main=""Input Time Series"")"

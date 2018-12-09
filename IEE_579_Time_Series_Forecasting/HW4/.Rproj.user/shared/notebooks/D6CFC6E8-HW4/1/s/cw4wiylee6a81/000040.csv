@@ -1,0 +1,5 @@
+"0","lag1.x_t_6.18.ts<-lag(x_t_6.18.ts,0)"
+"0","dat1<-cbind(x_t_6.18.ts, lag1.x_t_6.18.ts, y_t_6.18.ts)"
+"0","dimnames(dat1)[[2]]<-c(""xt"",""lag1x"",""yt"")"
+"0","data2<-na.omit(as.data.frame(dat1))"
+"0","data2"
