@@ -3,7 +3,7 @@ The objective of this repository is to illustrate the usage of the following:
 
 * Java
 * Matlab
-* Python
+* Python (Jupyter Notebook, Scikit-Learn, Pandas, Scipy, Numpy, Matplotlib)
 * C#
 * R
 * MySQL
@@ -17,6 +17,7 @@ and the statistical software JMP. Samples of the following class will be present
 * SER 222 - Dsgn and Analy: Data Structures and Algorithms (Java)
 * EEE 507 - Multidimensional Signal Processing (Matlab)
 * IEE 578 - Regression Analysis (JMP and Python)
+* IEE 520 - Statistical Learning for Data Mining (Python, Jupyter Notebook, Scikit-Learn, Pandas, Scipy, Numpy, Matplotlib)
 * CSE 598 - Distributed S/W Development (Visual Studio, HTML5, C#)
 * CSE 593 - Time Series Forecasting (JMP, Minitab, R) 
 * CSE 593 - Applied Project (Java, HTML5, CSS, AWS RDS, MySQL, Apache Tomcat)
